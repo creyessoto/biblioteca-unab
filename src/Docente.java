@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class Docente extends Usuario {
     private String profesion;
 
-    public Docente(String RUN, String nombreCompleto, char genero, Prestamo prestamo, String profesion) {
-        super(RUN, nombreCompleto, genero, prestamo);
+    public Docente(String RUN, String nombreCompleto, char genero,  String profesion) {
+        super(RUN, nombreCompleto, genero);
         this.profesion = profesion;
     }
 
@@ -58,11 +58,6 @@ public class Docente extends Usuario {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public int prestamo(Usuario usuario) {
-        return super.prestamo(usuario);
     }
 
 }

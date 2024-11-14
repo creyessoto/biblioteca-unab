@@ -13,14 +13,14 @@ public class Main {
         Libro lib3 = new Libro(33333,"Frankenstein","Mary Shelley",5,5,"https://www.planetadelibros.com/libro-frankenstein/190884");
         Libro lib4 = new Libro(44444,"Las mil y una noches","Anonimo",3,3,"https://www.planetadelibros.com/libro-las-mil-y-una-noches/255855");
 
-        Estudiante est1 = new Estudiante("18528468-9","Juan Perez",'M',null,"Ingenieria informatica");
-        Estudiante est2 = new Estudiante("113539297-9","Juan Perez",'F',null,"Ingenieria informatica");
-        Estudiante est3 = new Estudiante("17767354-4","Juan Perez",'F',null,"Ingenieria informatica");
-        Estudiante est4 = new Estudiante("16638643-8","Juan Perez",'M',null,"Ingenieria informatica");
+        Estudiante est1 = new Estudiante("18528468-9","Juan Perez",'M',"Ingenieria informatica");
+        Estudiante est2 = new Estudiante("113539297-9","Juan Perez",'F',"Ingenieria informatica");
+        Estudiante est3 = new Estudiante("17767354-4","Juan Perez",'F',"Ingenieria informatica");
+        Estudiante est4 = new Estudiante("16638643-8","Juan Perez",'M',"Ingenieria informatica");
 
         Prestamo prestamoEst2 = new Prestamo(est2,lib1,new GregorianCalendar(2024,11,14),null);
 
-        est2.setPrestamo(prestamoEst2);
+
 
 
         //Usuario user1 = new Estudiante("18528468-9","Juan Perez",'M',null,"Ingenieria informatica");
@@ -40,7 +40,7 @@ public class Main {
         est1.validarRut("12334");
         est1.verificarExisteRun(usuarios,"18528468-9");
         est1.validarGenero('m');
-        System.out.println(est2.prestamo(est2));
+
     }
 }
 

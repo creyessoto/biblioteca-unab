@@ -13,13 +13,11 @@ public abstract class Usuario {
     private String RUN;
     private String nombreCompleto;
     private char genero;
-    private Prestamo prestamo;
 
-    public Usuario(String RUN, String nombreCompleto, char genero, Prestamo prestamo) {
+    public Usuario(String RUN, String nombreCompleto, char genero) {
         this.RUN = RUN;
         this.nombreCompleto = nombreCompleto;
         this.genero = genero;
-        this.prestamo = prestamo;
     }
 
     public String getRUN() {
@@ -49,21 +47,12 @@ public abstract class Usuario {
         this.genero = genero;
     }
 
-    public Prestamo getPrestamo() {
-        return prestamo;
-    }
-
-    public void setPrestamo(Prestamo prestamo) {
-        this.prestamo = prestamo;
-    }
-
     @Override
     public String toString() {
         return "Usuario{" +
                 "RUN='" + RUN + '\'' +
                 ", nombreCompleto='" + nombreCompleto + '\'' +
                 ", genero=" + genero +
-                ", prestamo=" + prestamo +
                 '}';
     }
 
@@ -106,12 +95,4 @@ public abstract class Usuario {
         genero = Character.toUpperCase(genero);
         return genero == 'F' || genero == 'M';
     }
-
-    public int prestamo(Usuario usuario){
-        if(usuario.getPrestamo()== null){
-            return 0;
-        }
-        return usuario.getPrestamo().getLibro().getISBN();
-    }
-
 }

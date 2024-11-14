@@ -13,8 +13,8 @@ public class Estudiante extends Usuario {
     private String carrera;
 
 
-    public Estudiante(String RUN, String nombreCompleto, char genero, Prestamo prestamo, String carrera) {
-        super(RUN, nombreCompleto, genero, prestamo);
+    public Estudiante(String RUN, String nombreCompleto, char genero, String carrera) {
+        super(RUN, nombreCompleto, genero);
         this.carrera = carrera;
     }
 
@@ -59,10 +59,5 @@ public class Estudiante extends Usuario {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public int prestamo(Usuario usuario) {
-        return super.prestamo(usuario);
     }
 }
