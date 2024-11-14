@@ -25,6 +25,13 @@ public class Prestamo {
         this.devolucion = devolucion;
     }
 
+    public Prestamo(){
+        this.usuario = null;
+        this.libro = null;
+        this.fecha = null;
+        this.devolucion = null;
+    }
+
     /**
      * @return the usuario
      */
@@ -127,7 +134,7 @@ public class Prestamo {
         // UNAS VEZ GENERADA TODAS LAS VALIDACIONES
         
         // GENERAMOS UNA INSTANCIA DE PRÉSTAMO
-        Prestamo prestamo = new Prestamo(usuario, libro,);
+        Prestamo prestamo = new Prestamo(usuario, libro,null,null);
         // ---------------- LO QUE SE DEBE HACER A CONTINUACIÓN SE PUEDE REALIZAR DENTRO DE ÉSTE MÉTODO Ó ----------------
         // ----------------------------- DENTRO DE LA INSTANCIACIÓN DEL OBJETO -------------------------------------------
         // REDUCIMOS LA CANTIDAD DISPONIBLE DEL LIBRE Y AUMENTAMOS LA CANTIDAD EN USO
