@@ -13,11 +13,14 @@ public abstract class Usuario {
     private String RUN;
     private String nombreCompleto;
     private char genero;
+    private boolean habilitado;
+
 
     public Usuario(String RUN, String nombreCompleto, char genero) {
         this.RUN = RUN;
         this.nombreCompleto = nombreCompleto;
         this.genero = genero;
+        this.habilitado = true;
     }
 
     public String getRUN() {
@@ -45,6 +48,13 @@ public abstract class Usuario {
 
     public void setGenero(char genero) {
         this.genero = genero;
+    }
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
     }
 
     @Override

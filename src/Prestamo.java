@@ -3,9 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import com.sun.source.tree.NewClassTree;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  *
@@ -85,7 +86,6 @@ public class Prestamo {
         if (getUsuario() instanceof Docente) {
             return "Docente";
         }
-       
         return "Estudiante";
     }
     
@@ -97,7 +97,10 @@ public class Prestamo {
         // DEBIDO A QUE DEVOLUCIÓN SE INSTANCIÓ DENTRO DEL OBJETO Y NO POR FUERA
         setDevolucion(devolucion);
         // TENGO QUE HABILITAR AL USUARIO
+        getUsuario().setHabilitado(true);
         // TENGO QUE AUMENTAR EL STOCK DISPONBILE Y DISMINUIR EL STOCK ASIGNADO
+        getLibro().setCantDisponible(getLibro().getCantDisponible()+1);
+        getLibro().setCantBiblioteca(getLibro().getCantBiblioteca()-1);
         // TENGO QUE COBRAR MULTA SI ES QUE CORRESPONDE
     }
     
@@ -122,17 +125,26 @@ public class Prestamo {
         // AHORA DEBEMOS REALIZAR LAS VALIDACIONES
         
         // AQUÍ VALIDAMOS QUE EL LIBRO TENGA COMO MÍNIMO UN EJEMPLAR //
+        if (libro.getCantDisponible()<1){
+            System.out.println("No quedan unidades disponibles para solicitar");
+            return null;
+        }
         // AQUÍ VALIDAMOS QUE EL USUARIO DEBA ESTAR HABILTIADO PARA EL PRÉSTAMO //
+        if(!usuario.isHabilitado()){
+            System.out.println("Este usuario no esta habilitado para reservar");
+        }
         
         // UNAS VEZ GENERADA TODAS LAS VALIDACIONES
         
         // GENERAMOS UNA INSTANCIA DE PRÉSTAMO
-        Prestamo prestamo = new Prestamo(usuario, libro,null,null);
+        Prestamo prestamo = new Prestamo(usuario, libro, new GregorianCalendar(TimeZone.getDefault(), Locale.getDefault()),null);
         // ---------------- LO QUE SE DEBE HACER A CONTINUACIÓN SE PUEDE REALIZAR DENTRO DE ÉSTE MÉTODO Ó ----------------
         // ----------------------------- DENTRO DE LA INSTANCIACIÓN DEL OBJETO -------------------------------------------
-        // REDUCIMOS LA CANTIDAD DISPONIBLE DEL LIBRE Y AUMENTAMOS LA CANTIDAD EN USO
+        // REDUCIMOS LA CANTIDAD DISPONIBLE DEL LIBRO Y AUMENTAMOS LA CANTIDAD EN USO
+        libro.setCantDisponible(libro.getCantDisponible()-1);
+        libro.setCantBiblioteca(libro.getCantBiblioteca()+1);
         // DEJAMOS AL USUARIO NO DISPONIBLE PARA EL NUEVO PRÉSTAMO
-        // 
+        usuario.setHabilitado(false);
         
         // RETORNAMOS EL PRÉSTAMO VALIDADO
         return prestamo;
@@ -211,6 +223,7 @@ public class Prestamo {
         String estadoBase = "Prestamo: \n" + 
                 "ISBN: " + getLibro().getISBN() + "\n" +
                 "RUN: " + getUsuario().getRUN() + "\n" +
+                "Fecha Prestamo: " + obtenerFecha(getFecha()) + "\n" +
                 "Arrendado por: " + obtenerTipoDeUsuario() + "\n" + 
                 "Estado: ";
         
@@ -222,5 +235,11 @@ public class Prestamo {
         }
         
         return estadoBase;
+    }
+
+    public static String obtenerFecha(GregorianCalendar fecha){
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+
+        return format.format(fecha.getTime());
     }
 }

@@ -40,6 +40,9 @@ public class Main {
         System.out.println(Estudiante.validarRut("11111111-1"));
         Estudiante.verificarExisteRun(usuarios,"18528468-9");
         Docente.validarGenero('X');
+        System.out.println(Prestamo.ingresarPrestamo(11111,"18528468-9",libros,usuarios));
+        System.out.println(libros);
+
 
     }
 }
