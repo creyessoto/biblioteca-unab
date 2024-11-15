@@ -25,13 +25,6 @@ public class Prestamo {
         this.devolucion = devolucion;
     }
 
-    public Prestamo(){
-        this.usuario = null;
-        this.libro = null;
-        this.fecha = null;
-        this.devolucion = null;
-    }
-
     /**
      * @return the usuario
      */

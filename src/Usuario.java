@@ -56,11 +56,12 @@ public abstract class Usuario {
                 '}';
     }
 
-    public boolean validarRut(String rut) {
+    public static boolean validarRut(String rut) {
         // Eliminar puntos y guión
         rut = rut.replace(".", "").replace("-", "");
         // Validar largo del RUT
         if (rut.length() < 8 || rut.length() > 9) {
+            System.out.println("RUN invalido!");
             return false;
         }
         // Separar el número y el dígito verificador
@@ -76,23 +77,34 @@ public abstract class Usuario {
             char dvCalculado = (s != 0) ? (char) (s + 47) : 'K';
 
             // Verificar si el dígito verificador es correcto
-            return dv == dvCalculado;
+            if(dv == dvCalculado){
+                return true;
+            }
+            System.out.println("RUN invalido!");
+            return false;
         } catch (NumberFormatException e) {
+            System.out.println("RUN invalido!");
             return false; // Si el número no es válido, retornamos false
         }
     }
 
-    public boolean verificarExisteRun(ArrayList<Usuario> usuarios, String rut) {
+    public static boolean verificarExisteRun(ArrayList<Usuario> usuarios, String rut) {
         for (int i = 0; i < usuarios.size() ; i++){
             if(usuarios.get(i).getRUN()==rut){
+                System.out.println("Run ya existe");
                 return true;
             }
         }
         return false;
     }
 
-    public boolean validarGenero(char genero) {
+    public static boolean validarGenero(char genero) {
         genero = Character.toUpperCase(genero);
-        return genero == 'F' || genero == 'M';
+        if(genero == 'F' || genero == 'M'){
+            return true;
+        };
+        System.out.println("Genero debe ser 'M' o 'F'");
+        return false;
     }
+
 }

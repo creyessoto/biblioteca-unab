@@ -33,31 +33,4 @@ public class Estudiante extends Usuario {
                 "carrera='" + carrera + '\'' +
                 '}';
     }
-
-    @Override
-    public boolean validarRut(String rut) {
-        if(super.validarRut(rut)){
-            return true;
-        }
-        System.out.println("RUN de estudiante invalido!");
-        return false;
-    }
-
-    @Override
-    public boolean verificarExisteRun(ArrayList<Usuario> usuarios, String rut) {
-        if(super.verificarExisteRun(usuarios, rut)){
-            System.out.println("Estudiante "+getNombreCompleto()+" ya existe");
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean validarGenero(char genero) {
-        if(!super.validarGenero(genero)){
-            System.out.println("Genero debe ser 'M' o 'F'");
-            return false;
-        }
-        return true;
-    }
 }

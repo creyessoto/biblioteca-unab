@@ -23,7 +23,7 @@ public class Main {
 
 
 
-        //Usuario user1 = new Estudiante("18528468-9","Juan Perez",'M',null,"Ingenieria informatica");
+        //Usuario user1 = new Estudiante("18528468-9","Juan Perez",'M',"Ingenieria informatica");
         //ArrayList<Estudiante> estudiantes = new ArrayList<>();
         ArrayList<Usuario> usuarios = new ArrayList<>();
         usuarios.add(est1);
@@ -37,9 +37,9 @@ public class Main {
         //estudiantes.add(est1);
 
         //System.out.println(Usuario.validarRut("11111111-1"));
-        est1.validarRut("12334");
-        est1.verificarExisteRun(usuarios,"18528468-9");
-        est1.validarGenero('m');
+        System.out.println(Estudiante.validarRut("11111111-1"));
+        Estudiante.verificarExisteRun(usuarios,"18528468-9");
+        Docente.validarGenero('X');
 
     }
 }
