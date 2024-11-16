@@ -13,14 +13,14 @@ public abstract class Usuario {
     private String RUN;
     private String nombreCompleto;
     private char genero;
-    private boolean habilitado;
+    private int prestamo;
 
 
     public Usuario(String RUN, String nombreCompleto, char genero) {
         this.RUN = RUN;
         this.nombreCompleto = nombreCompleto;
         this.genero = genero;
-        this.habilitado = true;
+        this.prestamo = 0;
     }
 
     public String getRUN() {
@@ -49,20 +49,19 @@ public abstract class Usuario {
     public void setGenero(char genero) {
         this.genero = genero;
     }
-    public boolean isHabilitado() {
-        return habilitado;
+    public int getPrestamo() {
+        return prestamo;
     }
 
-    public void setHabilitado(boolean habilitado) {
-        this.habilitado = habilitado;
+    public void setPrestamo(int prestamo) {
+        this.prestamo = prestamo;
     }
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "RUN='" + RUN + '\'' +
-                ", nombreCompleto='" + nombreCompleto + '\'' +
-                ", genero=" + genero +
+        return "RUN: " + RUN + " " +
+                ", nombreCompleto: " + nombreCompleto + " " +
+                ", genero: " + genero +" "+
                 '}';
     }
 
@@ -87,7 +86,7 @@ public abstract class Usuario {
             char dvCalculado = (s != 0) ? (char) (s + 47) : 'K';
 
             // Verificar si el dígito verificador es correcto
-            if(dv == dvCalculado){
+            if (dv == dvCalculado) {
                 return true;
             }
             System.out.println("RUN invalido!");
@@ -98,9 +97,17 @@ public abstract class Usuario {
         }
     }
 
+    public static String formatearRun(String rut) {
+        rut = rut.replace(".", "").replace("-", "");
+        String rutNumero = rut.substring(0, rut.length() - 1);
+        char dv = rut.charAt(rut.length() - 1);
+        return rutNumero+"-"+dv;
+    }
+
+
     public static boolean verificarExisteRun(ArrayList<Usuario> usuarios, String rut) {
         for (int i = 0; i < usuarios.size() ; i++){
-            if(usuarios.get(i).getRUN()==rut){
+            if(usuarios.get(i).getRUN().equals(rut)){
                 System.out.println("Run ya existe");
                 return true;
             }
@@ -109,12 +116,28 @@ public abstract class Usuario {
     }
 
     public static boolean validarGenero(char genero) {
-        genero = Character.toUpperCase(genero);
-        if(genero == 'F' || genero == 'M'){
-            return true;
-        };
-        System.out.println("Genero debe ser 'M' o 'F'");
+        try {
+            genero = Character.toUpperCase(genero);
+            if (genero == 'F' || genero == 'M') {
+                return true;
+            }
+            System.out.println("Genero debe ser 'M' o 'F'");
+            return false;
+        }catch (StringIndexOutOfBoundsException e){
+            System.out.println("Genero debe ser 'M' o 'F'");
+        }
         return false;
+    }
+
+    public static ArrayList<Usuario> eliminarUsuario(ArrayList<Usuario> usuarios, String RUN){
+        for (int i = 0; i < usuarios.size(); i++) {
+            Usuario usuario = usuarios.get(i);
+            if(usuario.getRUN().equals(RUN)){
+                usuarios.remove(i);
+                System.out.println("Usuario Eliminado!");
+            }
+        }
+        return usuarios;
     }
 
 }

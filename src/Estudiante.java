@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Tom
@@ -29,8 +27,25 @@ public class Estudiante extends Usuario {
     @Override
     public String toString() {
         return "Estudiante{" +
-                "estudiante= " + super.toString() +'\'' +
-                "carrera='" + carrera + '\'' +
-                '}';
+                "estudiante: " + super.toString() +" " +
+                "carrera: " + carrera + " " +
+                "} \n";
+    }
+
+
+    public static Usuario crearUsuario(String RUN, String nombreCompleto, char genero, String carrera) {
+
+        if(!validarRut(RUN)){
+            System.out.println("Rut invalido");
+            return null;
+        }
+        if(!validarGenero(genero)){
+            System.out.println("Genero Invalido");
+            return null;
+        }
+        Estudiante usuario = new Estudiante(RUN,nombreCompleto,genero,carrera);
+
+        return usuario;
+
     }
 }

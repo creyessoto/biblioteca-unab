@@ -71,13 +71,13 @@ public class Libro {
 
     @Override
     public String toString() {
-        return "Libro{" +
+        return "Libro{ \n" +
                 "ISBN=" + ISBN +
                 ", titulo='" + titulo + '\'' +
                 ", autor='" + autor + '\'' +
                 ", cantBiblioteca=" + cantBiblioteca +
                 ", cantDisponible=" + cantDisponible +
                 ", imagen='" + imagen + '\'' +
-                '}';
+                "} \n";
     }
 }

@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-import com.sun.source.tree.NewClassTree;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -97,7 +95,7 @@ public class Prestamo {
         // DEBIDO A QUE DEVOLUCIÓN SE INSTANCIÓ DENTRO DEL OBJETO Y NO POR FUERA
         setDevolucion(devolucion);
         // TENGO QUE HABILITAR AL USUARIO
-        getUsuario().setHabilitado(true);
+        getUsuario().setPrestamo(0);
         // TENGO QUE AUMENTAR EL STOCK DISPONBILE Y DISMINUIR EL STOCK ASIGNADO
         getLibro().setCantDisponible(getLibro().getCantDisponible()+1);
         getLibro().setCantBiblioteca(getLibro().getCantBiblioteca()-1);
@@ -130,7 +128,7 @@ public class Prestamo {
             return null;
         }
         // AQUÍ VALIDAMOS QUE EL USUARIO DEBA ESTAR HABILTIADO PARA EL PRÉSTAMO //
-        if(!usuario.isHabilitado()){
+        if(usuario.getPrestamo()>0){
             System.out.println("Este usuario no esta habilitado para reservar");
         }
         
@@ -144,7 +142,7 @@ public class Prestamo {
         libro.setCantDisponible(libro.getCantDisponible()-1);
         libro.setCantBiblioteca(libro.getCantBiblioteca()+1);
         // DEJAMOS AL USUARIO NO DISPONIBLE PARA EL NUEVO PRÉSTAMO
-        usuario.setHabilitado(false);
+        usuario.setPrestamo(libro.getISBN());
         
         // RETORNAMOS EL PRÉSTAMO VALIDADO
         return prestamo;
