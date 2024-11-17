@@ -257,14 +257,13 @@ public class Prestamo {
                 "ISBN: " + getLibro().getISBN() + "\n" +
                 "RUN: " + getUsuario().getRUN() + "\n" +
                 "Fecha Prestamo: " + obtenerFecha(getFecha()) + "\n" +
-                "Arrendado por: " + obtenerTipoDeUsuario() + "\n" + 
+                "Arrendado por: " + obtenerTipoDeUsuario() + "\n" +
+                "Nombre: " + getUsuario().getNombreCompleto() + "\n" +
                 "Estado: ";
         
         // LO MODIFICAMOS EN BASE A LA DEVOLUCIÓN
         if (getDevolucion() != null) {
             estadoBase += "En préstamo.";
-        } else {
-            estadoBase += "Devuelto.";
         }
         
         return estadoBase;
