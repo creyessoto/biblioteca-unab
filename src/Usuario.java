@@ -108,7 +108,7 @@ public abstract class Usuario {
     public static boolean verificarExisteRun(ArrayList<Usuario> usuarios, String rut) {
         for (int i = 0; i < usuarios.size() ; i++){
             if(usuarios.get(i).getRUN().equals(rut)){
-                System.out.println("Run ya existe");
+                System.out.println("Run existe");
                 return true;
             }
         }
@@ -138,6 +138,32 @@ public abstract class Usuario {
             }
         }
         return usuarios;
+    }
+
+    public static Usuario buscarUsuario(String RUN, ArrayList<Usuario> usuarios) {
+        // BUSCO EL LIBRO EN EL ARREGLO DE USUARIOS
+        for (int i = 0; i < usuarios.size(); i++) {
+            // VOY OBTENIENDO CADA USUARIO EN EL ARREGLO DE USUARIOS
+            Usuario usuario = usuarios.get(i);
+
+            // PREGUNTO SI EL RUT DEL USUARIO ES IGUAL AL RUN QUE BUSCO
+            if (usuario.getRUN().equals(RUN)) {
+                // SI LO ENCUENTRO, LO RETORNO
+                return usuario;
+            }
+        }
+
+        // SI NO LO ENCUENTRO, RETORNO UN NULL
+        return null;
+    }
+    public static void editarUsuario(String run, String nombre,ArrayList<Usuario> usuarios){
+        if(nombre.trim() != ""){
+            Usuario usuario = buscarUsuario(run,usuarios);
+            if(usuario ==null){
+                throw new IllegalArgumentException("No existe.");
+            }
+            usuario.setNombreCompleto(nombre);
+        }
     }
 
 }

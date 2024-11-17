@@ -5,6 +5,7 @@
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -88,21 +89,27 @@ public class Prestamo {
     }
     
     // SOLICITO LOS PARÁMETROS DE ENTRADA DE LA DEVOLUCIÓN
-    public void asignarDevolucion() {
-        // POR AHORA SE GENERA VACIÓ PARA QUE USTED LO COMPLETE
-        Devolucion devolucion = new Devolucion();
-        // ASINGO LA DEVOLUCIÓN RESPETANDO LA RELACIÓN DE COMPOSICIÓN
-        // DEBIDO A QUE DEVOLUCIÓN SE INSTANCIÓ DENTRO DEL OBJETO Y NO POR FUERA
-        setDevolucion(devolucion);
+    public void asignarDevolucion(Devolucion devolucion) {
+
         // TENGO QUE HABILITAR AL USUARIO
         getUsuario().setPrestamo(0);
         // TENGO QUE AUMENTAR EL STOCK DISPONBILE Y DISMINUIR EL STOCK ASIGNADO
         getLibro().setCantDisponible(getLibro().getCantDisponible()+1);
         getLibro().setCantBiblioteca(getLibro().getCantBiblioteca()-1);
         // TENGO QUE COBRAR MULTA SI ES QUE CORRESPONDE
+        GregorianCalendar fechaActual = new GregorianCalendar(TimeZone.getDefault(), Locale.getDefault());
+        if(fechaActual.after(devolucion.getFecha())){
+            long diferenciaMilis =  fechaActual.getTimeInMillis() - devolucion.getFecha().getTimeInMillis() ;
+            // Convertir la diferencia en días
+            long dias = TimeUnit.MILLISECONDS.toDays(diferenciaMilis);
+            int multa = (int) (1000*dias);
+            devolucion.setMulta(multa);
+        }
+
     }
     
-    public static Prestamo ingresarPrestamo(int ISBN, String RUN, ArrayList<Libro> libros, ArrayList<Usuario> usuarios) {
+    public static Prestamo ingresarPrestamo(int ISBN, String RUN, ArrayList<Libro> libros, ArrayList<Usuario> usuarios,int dias,ArrayList<Devolucion> devoluciones) {
+
         // ASIGNO UNA VARIABLE CON VALOR A LO QUE RETORNE EL MÉTODO BUSCARLIBRO
         Libro libro = buscarLibro(ISBN, libros);
         
@@ -130,6 +137,7 @@ public class Prestamo {
         // AQUÍ VALIDAMOS QUE EL USUARIO DEBA ESTAR HABILTIADO PARA EL PRÉSTAMO //
         if(usuario.getPrestamo()>0){
             System.out.println("Este usuario no esta habilitado para reservar");
+            return null;
         }
         
         // UNAS VEZ GENERADA TODAS LAS VALIDACIONES
@@ -143,12 +151,30 @@ public class Prestamo {
         libro.setCantBiblioteca(libro.getCantBiblioteca()+1);
         // DEJAMOS AL USUARIO NO DISPONIBLE PARA EL NUEVO PRÉSTAMO
         usuario.setPrestamo(libro.getISBN());
+        GregorianCalendar fechaDevolucion = new GregorianCalendar(TimeZone.getDefault(), Locale.getDefault());
+        fechaDevolucion.add(Calendar.DAY_OF_MONTH,dias);
+        Devolucion devolucion = new Devolucion(libro.getISBN(),RUN,fechaDevolucion);
+        devoluciones.add(devolucion);
         
         // RETORNAMOS EL PRÉSTAMO VALIDADO
         return prestamo;
     }
-    
-    public static void ingresarDevolucion(int ISBN, String RUN, ArrayList<Prestamo> prestamos) {
+
+    public static void imprimirPrestamo(Prestamo prestamo, ArrayList<Devolucion> devoluciones){
+        Devolucion devolucion = Devolucion.buscarDevolucion(prestamo.getUsuario().getRUN(),prestamo.getLibro().getISBN(),devoluciones);
+        System.out.println("============================");
+        System.out.println("TICKET DE PRESTAMO");
+        System.out.println("============================");
+        System.out.println("");
+        System.out.println("Fecha Prestamo: "+Prestamo.obtenerFecha(prestamo.getFecha()));
+        System.out.println("Fecha de Devolucion: "+Prestamo.obtenerFecha(devolucion.getFecha()));
+        System.out.println("============================");
+        System.out.println("Libro: "+prestamo.getLibro());
+        System.out.println("Prestamo a nombre de: "+prestamo.getUsuario());
+
+    }
+
+    public static void ingresarDevolucion(int ISBN, String RUN, ArrayList<Prestamo> prestamos,ArrayList<Devolucion> devoluciones) {
         // EN BASE A LA GUÍA, DEBEMOS VALIDAR QUE EXISTA EL LIBRO Y EL USUARIO
         
         // LUEGO DEBEMOS VALIDAR QUE EL USUARIO A BUSCAR Y EL ISBN EXISTAN
@@ -158,9 +184,18 @@ public class Prestamo {
         if (prestamo == null) {
             throw new IllegalArgumentException("El prestamo a buscar no existe.");
         }
+        Devolucion devolucion = Devolucion.buscarDevolucion(RUN,ISBN,devoluciones);
+        if (devolucion == null) {
+            throw new IllegalArgumentException("El prestamo a buscar no existe.");
+        }
         
         // UNA VEZ GENERADAS TODAS LAS VALIDACIONES, EJECUTAMOS EL MÉTODO ASIGNAR DEVOLUCIÓN
-        prestamo.asignarDevolucion();
+        prestamo.asignarDevolucion(devolucion);
+
+        System.out.println("Libro entregado!");
+        System.out.println("multa a pagar: $"+devolucion.getMulta());
+        prestamos.remove(prestamo);
+        devoluciones.remove(devolucion);
     }
     
     public static Libro buscarLibro(int ISBN, ArrayList<Libro> libros) {
@@ -187,7 +222,7 @@ public class Prestamo {
             Usuario usuario = usuarios.get(i);
             
             // PREGUNTO SI EL RUT DEL USUARIO ES IGUAL AL RUN QUE BUSCO
-            if (usuario.getRUN() == RUN) {
+            if (usuario.getRUN().equals(RUN)) {
                 // SI LO ENCUENTRO, LO RETORNO
                 return usuario;
             }
@@ -205,7 +240,7 @@ public class Prestamo {
             
             // PREGUNTO SI EL RUT DEL USUARIO ES IGUAL AL RUN QUE BUSCO Y EL ISBN DEL LIBRO ES IGUAL AL ISBN A BUSCAR
             // FALTA VALIDAR QUE EL PRÉSTAMO ESTÉ ACTUALMENTE ACTIVO Y NO ENCUENTRE UN PRÉSTAMO YA DEVUELVO
-            if (prestamo.getUsuario().getRUN() == RUN && prestamo.getLibro().getISBN() == ISBN) {
+            if (prestamo.getUsuario().getRUN().equals(RUN)  && prestamo.getLibro().getISBN() == ISBN) {
                 // SI LO ENCUENTRO, LO RETORNO
                 return prestamo;
             }
@@ -213,6 +248,23 @@ public class Prestamo {
         
         // SI NO LO ENCUENTRO, RETORNO UN NULL
         return null;
+    }
+
+    public static boolean validarDias(String RUN, ArrayList<Usuario>usuarios, int dias){
+        Usuario usuario = buscarUsuario( RUN,  usuarios);
+        if(usuario instanceof Docente){
+            if(dias<=20 && dias > 0){
+                return true;
+            }else{
+                System.out.println("Ingrese un plazo valido");
+            }
+        }
+        if(dias<=10 && dias >0){
+            return true;
+        }else{
+            System.out.println("Ingrese un plazo valido");
+        }
+        return false;
     }
     
     @Override

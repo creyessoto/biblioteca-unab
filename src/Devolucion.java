@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class Devolucion {
@@ -18,9 +19,14 @@ public class Devolucion {
         this.multa = multa;
         this.fecha = fecha;
     }
-
     public Devolucion(){
 
+    }
+    public Devolucion( int isbn,String RUN, GregorianCalendar fecha) {
+        this.ISBN = isbn;
+        this.RUN = RUN;
+        this.multa = 0;
+        this.fecha = fecha;
     }
 
     public int getISBN() {
@@ -63,5 +69,15 @@ public class Devolucion {
                 ", multa=" + multa +
                 ", fecha=" + fecha +
                 '}';
+    }
+
+    public static Devolucion buscarDevolucion(String rut, int isbn, ArrayList<Devolucion> devoluciones){
+        for (int i = 0; i < devoluciones.size(); i++) {
+            Devolucion devolucion = devoluciones.get(i);
+            if(devolucion.getRUN().equals(rut) && devolucion.getISBN() == isbn){
+                return devolucion;
+            }
+        }
+        return null;
     }
 }

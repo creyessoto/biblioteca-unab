@@ -28,12 +28,19 @@ public class Main {
         Libro lib3 = new Libro(33333,"Frankenstein","Mary Shelley",5,0,"https://www.planetadelibros.com/libro-frankenstein/190884");
         Libro lib4 = new Libro(44444,"Las mil y una noches","Anonimo",3,1,"https://www.planetadelibros.com/libro-las-mil-y-una-noches/255855");
 
-        Estudiante est1 = new Estudiante("18528468-9","Juan Perez",'M',"Ingenieria informatica");
-        Estudiante est2 = new Estudiante("113539297-9","Juan Perez",'F',"Ingenieria informatica");
-        Docente doce1 = new Docente("17767354-4","Juan Perez",'F',"Medico Cirujano","Dr");
-        Docente doce2 = new Docente("16638643-8","Juan Perez",'M',"Traumatologo","Dr");
+        Estudiante est1 = new Estudiante("18528468-9","Camilo Reyes",'M',"Ingenieria informatica");
+        Estudiante est2 = new Estudiante("113539297-9","Juanita Perez",'F',"Ingenieria informatica");
+        Docente doce1 = new Docente("17767354-4","Maria Paz",'F',"Medico Cirujano","Dr");
+        Docente doce2 = new Docente("16638643-8","Armando Casas",'M',"Traumatologo","Dr");
+        est2.setPrestamo(11111);
+        doce2.setPrestamo(33333);
 
-        Prestamo prestamoEst2 = new Prestamo(est2,lib1,new GregorianCalendar(2024,11,14),null);
+        Devolucion devolucion1 = new Devolucion(11111,"113539297-9",new GregorianCalendar(2024,10,15));
+        Devolucion devolucion2 = new Devolucion(33333,"17767354-4",new GregorianCalendar(2024,9,20));
+
+
+        Prestamo prestamo1 = new Prestamo(est2,lib1,new GregorianCalendar(2024,11,1),devolucion1);
+        Prestamo prestamo2 = new Prestamo(doce1,lib3,new GregorianCalendar(2024,9,14),devolucion2);
 
 
 
@@ -51,38 +58,18 @@ public class Main {
         libros.add(lib3);
         libros.add(lib4);
 
-        //estudiantes.add(est1);
+        ArrayList<Prestamo> prestamos = new ArrayList<>();
+        prestamos.add(prestamo1);
+        prestamos.add(prestamo2);
 
-        //System.out.println(Usuario.validarRut("11111111-1"));
-        System.out.println(Estudiante.validarRut("11111111-1"));
-        Estudiante.verificarExisteRun(usuarios,"18528468-9");
-        Docente.validarGenero('X');
-        System.out.println(Prestamo.ingresarPrestamo(11111,"18528468-9",libros,usuarios));
-        System.out.println(libros);
+        ArrayList<Devolucion> devoluciones = new ArrayList<>();
+        devoluciones.add(devolucion1);
+        devoluciones.add(devolucion2);
 
-        System.out.println("Borrar usuario 2");
-        //Usuario.eliminarUsuario(usuarios,"113539297-9");
-        System.out.println(usuarios);
 
-        /*
-        Usuarios
-        crearUsuario()
-        editarUsuario()
-        eliminarusuario()
-        listarUsuarios()
+        //System.out.println(libros);
 
-        Libro
-        AgregarLibro()
-        eliminarLibro()
-        listarLibro()
-
-        crearPrestamo()
-        devolverLibro()
-
-        Prestamo y Devolucion
-        crearPrestamo()
-        devolverLibro()
-         */
+        //System.out.println(usuarios);
 
         while (!salir) {
             System.out.println("===========================");
@@ -93,7 +80,7 @@ public class Main {
             System.out.println("2. Editar Usuario");
             System.out.println("3. Eliminar Usuario");
             System.out.println("4. Agregar Libro");
-            System.out.println("5. Eliminar Libro 3");
+            System.out.println("5. Eliminar Libro");
             System.out.println("6. Generar Prestamo");
             System.out.println("7. Devolver Libro");
             System.out.println("8. Listar Usuarios");
@@ -110,7 +97,7 @@ public class Main {
                     case 1:
                         System.out.println("Crear Usuario");
                         System.out.println("");
-                        System.out.println("Ingrese RUN: (ejemplo: 12345678-9");
+                        System.out.println("Ingrese RUN: (ejemplo: 12345678-9)");
                         datos = sn.next();
                         if (!Usuario.validarRut(datos)) {
                             break;
@@ -159,6 +146,20 @@ public class Main {
                         break;
                     case 2:
                         System.out.println("Editar Usuario ");
+                        System.out.println("Ingrese RUN de usuario: (ejemplo: 12345678-9)");
+                        datos = sn.next();
+                        if (!Usuario.validarRut(datos)) {
+                            break;
+                        }
+                        run = Usuario.formatearRun(datos);
+                        if (!Usuario.verificarExisteRun(usuarios, run)) {
+                            break;
+                        }
+                        System.out.println("Ingrese nuevo Nombre: ");
+                        sn.nextLine();
+                        String nombreNuevo = sn.nextLine();
+                        Usuario.editarUsuario(run,nombreNuevo,usuarios);
+                        System.out.println("Usuario actualizado");
                         break;
                     case 3:
                         System.out.println("Eliminar Usuario");
@@ -171,22 +172,89 @@ public class Main {
                         run = Usuario.formatearRun(datos);
                         if (Usuario.verificarExisteRun(usuarios, run)) {
                             usuarios = Usuario.eliminarUsuario(usuarios, run);
-                            System.out.println("Usuario Eliminado");
                             }else {
                             System.out.println("No existen usuarios con ese RUN");
                         }
                         break;
                     case 4:
                         System.out.println("Agregar Libro");
+                        System.out.println("Ingrese ISBN: (ejemplo: 123456");
+                        int isbn = sn.nextInt();
+                        if(!Libro.verificarExisteIsbn(libros,isbn)){
+                            sn.nextLine();
+                            System.out.println("Ingrese Titulo del libro");
+                            String titulo = sn.nextLine();
+                            System.out.println("Ingrese autor del libro");
+                            String autor = sn.nextLine();
+                            System.out.println("Ingrese la cantidad de libros disponibles");
+                            int cantidad = sn.nextInt();
+                            sn.nextLine();
+                            System.out.println("Ingrese URL de la imagen");
+                            String imagen = sn.nextLine();
+                            Libro libro = Libro.agregarLibro(isbn,titulo,autor,cantidad,imagen);
+                            libros.add(libro);
+                            System.out.println("Libro agregado!");
+                        }else{
+                            System.out.println("Libro ya existe");
+                        }
                         break;
                     case 5:
                         System.out.println("Eliminar Libro");
+                        System.out.println("");
+                        System.out.println("Ingrese ISBN: (ejemplo: 123456");
+                        int ISBN = sn.nextInt();
+                        if (Libro.verificarExisteIsbn(libros,ISBN)) {
+                            libros = Libro.eliminarLibro(libros,ISBN);
+                        }else{
+                            System.out.println("Libro no existe");
+                        }
                         break;
                     case 6:
                         System.out.println("Generar Prestamo");
+                        System.out.println("Ingrese ISBN de libro a solicitar: (ejemplo: 123456)");
+                        int codLibro = sn.nextInt();
+                        if(Libro.verificarExisteIsbn(libros,codLibro)) {
+                            sn.nextLine();
+                            System.out.println("Ingrese Rut del solicitante");
+                            datos = sn.nextLine();
+                            run = Usuario.formatearRun(datos);
+                            if (Usuario.verificarExisteRun(usuarios, run)) {
+                                System.out.println("Ingrese la cantidad de dias que necesita reservar el libro");
+                                System.out.println("Para Docentes maximo 20 dias, Estudiantes 10 dias maximo");
+                                int dias = sn.nextInt();
+                                if(!Prestamo.validarDias(run,usuarios,dias)){
+                                    break;
+                                }
+                                Prestamo prestamo = Prestamo.ingresarPrestamo(codLibro, run, libros, usuarios,dias,devoluciones);
+                                if (prestamo != null) {
+                                    prestamos.add(prestamo);
+                                    System.out.println("Prestamo creado!");
+                                    Prestamo.imprimirPrestamo(prestamo,devoluciones);
+                                }
+                            }
+                        }else {
+                            System.out.println("No existe libro");
+                        }
+
                         break;
                     case 7:
                         System.out.println("Devolver Libro");
+                        System.out.println("Ingrese ISBN de libro a devolver: (ejemplo: 123456)");
+                        int codLibroDev = sn.nextInt();
+                        if(Libro.verificarExisteIsbn(libros,codLibroDev)) {
+                            sn.nextLine();
+                            System.out.println("Ingrese Rut del solicitante");
+                            datos = sn.nextLine();
+                            run = Usuario.formatearRun(datos);
+                            if (Usuario.verificarExisteRun(usuarios, run)) {
+                                if(Prestamo.buscarPrestamo(codLibroDev,run,prestamos)==null){
+                                    System.out.println("No existen Prestamos asociados");
+                                    break;
+                                }else {
+                                    Prestamo.ingresarDevolucion(codLibroDev, run, prestamos, devoluciones);
+                                }
+                            }
+                        }
                         break;
                     case 8:
                         System.out.println("Listar Usuarios");
@@ -207,10 +275,6 @@ public class Main {
                 sn.next();
             }
         }
-
-
-
-
     }
 }
 
