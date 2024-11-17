@@ -119,7 +119,7 @@ public class Prestamo {
         }
         
         // ASIGNO UNA VARIABLE CON VALOR A LO QUE RETORNE EL MÉTODO BUSCARUSUARIO
-        Usuario usuario = buscarUsuario(RUN, usuarios);
+        Usuario usuario = Usuario.buscarUsuario(RUN, usuarios);
         
         // SI EL USUARIO ES NULO, ES PORQUE NO LO HE ENCONTRADO
         if (usuario == null) {
@@ -214,24 +214,7 @@ public class Prestamo {
         // SI NO LO ENCUENTRO, RETORNO UN NULL
         return null;
     }
-    
-    public static Usuario buscarUsuario(String RUN, ArrayList<Usuario> usuarios) {
-        // BUSCO EL LIBRO EN EL ARREGLO DE USUARIOS
-        for (int i = 0; i < usuarios.size(); i++) {
-            // VOY OBTENIENDO CADA USUARIO EN EL ARREGLO DE USUARIOS
-            Usuario usuario = usuarios.get(i);
-            
-            // PREGUNTO SI EL RUT DEL USUARIO ES IGUAL AL RUN QUE BUSCO
-            if (usuario.getRUN().equals(RUN)) {
-                // SI LO ENCUENTRO, LO RETORNO
-                return usuario;
-            }
-        }
-        
-        // SI NO LO ENCUENTRO, RETORNO UN NULL
-        return null;
-    }
-    
+
     public static Prestamo buscarPrestamo(int ISBN, String RUN, ArrayList<Prestamo> prestamos) {
         // BUSCO EL PRESTAMO EN EL ARREGLO DE PRESTAMOS
         for (int i = 0; i < prestamos.size(); i++) {
@@ -251,7 +234,7 @@ public class Prestamo {
     }
 
     public static boolean validarDias(String RUN, ArrayList<Usuario>usuarios, int dias){
-        Usuario usuario = buscarUsuario( RUN,  usuarios);
+        Usuario usuario = Usuario.buscarUsuario( RUN,  usuarios);
         if(usuario instanceof Docente){
             if(dias<=20 && dias > 0){
                 return true;
@@ -278,7 +261,7 @@ public class Prestamo {
                 "Estado: ";
         
         // LO MODIFICAMOS EN BASE A LA DEVOLUCIÓN
-        if (getDevolucion() == null) {
+        if (getDevolucion() != null) {
             estadoBase += "En préstamo.";
         } else {
             estadoBase += "Devuelto.";

@@ -85,8 +85,9 @@ public class Main {
             System.out.println("7. Devolver Libro");
             System.out.println("8. Listar Usuarios");
             System.out.println("9. Listar Libros");
+            System.out.println("10. Listar Prestamos");
 
-            System.out.println("10. Salir");
+            System.out.println("11. Salir");
 
             try {
 
@@ -265,10 +266,14 @@ public class Main {
                         System.out.println(libros.toString());
                         break;
                     case 10:
+                        System.out.println("Listar Prestamos");
+                        System.out.println(prestamos.toString());
+                        break;
+                    case 11:
                         salir = true;
                         break;
                     default:
-                        System.out.println("Solo números entre 1 y 10");
+                        System.out.println("Solo números entre 1 y 11");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Debes insertar un número");
